@@ -19,5 +19,7 @@
     <string name="button_weight_dec">-</string>
     <string name="exercise_reps_value">0</string>
     <string name="exercise_weight_value">0</string>
+    <string name="title_activity_display_message">My Message</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

@@ -17,10 +17,13 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.content.Intent;
+//import android.widget.EditText;
 
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+    public final static String EXTRA_MESSAGE = "me.thirteen.riron.MESSAGE";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -144,6 +147,27 @@ public class MainActivity extends ActionBarActivity
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
+    }
+
+    /** Called when the user clicks the decrement_reps button */
+    public void decrement_reps(View view) {
+        //Intent intent = new Intent(this, DisplayMessageActivity.class);
+        TextView dec_reps = (TextView) findViewById(R.id.textView2);
+        String reps_value = dec_reps.getText().toString();
+        Integer dec_reps_int = Integer.parseInt(reps_value);
+        dec_reps_int--;
+        dec_reps.setText(Integer.toString(dec_reps_int));
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        //startActivity(intent);
+    }
+
+    /** Called when the user clicks the decrement_reps button */
+    public void increment_reps(View view) {
+        TextView reps_textview = (TextView) findViewById(R.id.textView2);
+        String reps_value = reps_textview.getText().toString();
+        Integer reps_int = Integer.parseInt(reps_value);
+        reps_int++;
+        reps_textview.setText(Integer.toString(reps_int));
     }
 
 }

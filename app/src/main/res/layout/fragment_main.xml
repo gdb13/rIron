@@ -27,7 +27,8 @@
         android:id="@+id/button"
         android:layout_marginBottom="52dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="randomize_exercise" />
 
     <Button
         android:layout_width="wrap_content"
@@ -37,7 +38,8 @@
         android:layout_below="@+id/textView"
         android:layout_toRightOf="@+id/section_label"
         android:layout_toEndOf="@+id/section_label"
-        android:layout_marginTop="98dp" />
+        android:layout_marginTop="98dp"
+        android:onClick="decrement_reps" />
 
     <Button
         android:layout_width="wrap_content"
@@ -46,7 +48,8 @@
         android:id="@+id/button3"
         android:layout_alignBottom="@+id/button2"
         android:layout_toRightOf="@+id/button"
-        android:layout_toEndOf="@+id/button" />
+        android:layout_toEndOf="@+id/button"
+        android:onClick="increment_reps" />
 
     <Button
         android:layout_width="wrap_content"
@@ -56,7 +59,8 @@
         android:layout_below="@+id/button2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="46dp" />
+        android:layout_marginTop="46dp"
+        android:onClick="decrement_weight" />
 
     <Button
         android:layout_width="wrap_content"
@@ -65,7 +69,8 @@
         android:id="@+id/button5"
         android:layout_alignBottom="@+id/button4"
         android:layout_toRightOf="@+id/button"
-        android:layout_toEndOf="@+id/button" />
+        android:layout_toEndOf="@+id/button"
+        android:onClick="increment_weight" />
 
     <TextView
         android:layout_width="wrap_content"
