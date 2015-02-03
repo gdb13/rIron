@@ -1,5 +1,6 @@
 package me.thirteen.riron;
 
+import java.util.Random;
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -152,22 +153,73 @@ public class MainActivity extends ActionBarActivity
     /** Called when the user clicks the decrement_reps button */
     public void decrement_reps(View view) {
         //Intent intent = new Intent(this, DisplayMessageActivity.class);
-        TextView dec_reps = (TextView) findViewById(R.id.textView2);
-        String reps_value = dec_reps.getText().toString();
-        Integer dec_reps_int = Integer.parseInt(reps_value);
-        dec_reps_int--;
-        dec_reps.setText(Integer.toString(dec_reps_int));
+        TextView reps_textview = (TextView) findViewById(R.id.textView2);
+        String reps_value = reps_textview.getText().toString();
+        Integer reps_int = Integer.parseInt(reps_value);
+        reps_int--;
+        reps_textview.setText(Integer.toString(reps_int));
         //intent.putExtra(EXTRA_MESSAGE, message);
         //startActivity(intent);
     }
 
-    /** Called when the user clicks the decrement_reps button */
+    /** Called when the user clicks the increment_reps button */
     public void increment_reps(View view) {
         TextView reps_textview = (TextView) findViewById(R.id.textView2);
         String reps_value = reps_textview.getText().toString();
         Integer reps_int = Integer.parseInt(reps_value);
         reps_int++;
         reps_textview.setText(Integer.toString(reps_int));
+    }
+
+    /** Called when the user clicks the decrement_weight button */
+    public void decrement_weight(View view) {
+        TextView weight_textview = (TextView) findViewById(R.id.textView3);
+        String weight_value = weight_textview.getText().toString();
+        Integer weight_int = Integer.parseInt(weight_value);
+        weight_int--;
+        weight_textview.setText(Integer.toString(weight_int));
+    }
+
+    /** Called when the user clicks the increment_weight button */
+    public void increment_weight(View view) {
+        TextView weight_textview = (TextView) findViewById(R.id.textView3);
+        String weight_value = weight_textview.getText().toString();
+        Integer weight_int = Integer.parseInt(weight_value);
+        weight_int++;
+        weight_textview.setText(Integer.toString(weight_int));
+    }
+
+    /** Called when the user clicks the Random button */
+    public void randomize_exercise(View view) {
+        TextView exercise_textview = (TextView) findViewById(R.id.textView);
+        String [] exerciseList = new String[3];
+        exerciseList[0] = "Exercise 1";
+        exerciseList[1] = "Exercise 2";
+        exerciseList[2] = "Exercise 3";
+        Random rand = new Random();
+        int intRandExercise = rand.nextInt(3);
+        exercise_textview.setText(exerciseList[intRandExercise]);
+
+    }
+
+    /*** TEMPORARY TEST BUTTONS -- TEST/CODE DATA SAVE AND RECALL -- SharedPreferences ***/
+
+    /** Called when the user clicks the ADD button -- save string editText to SharedPreferences, toast list*/
+    public void add_list(View view) {
+        TextView test_text = (TextView) findViewById(R.id.editText);
+        String weight_value = test_text.getText().toString();
+        Integer weight_int = Integer.parseInt(weight_value);
+        weight_int++;
+        test_text.setText(Integer.toString(weight_int));
+    }
+
+    /** Called when the user clicks the REMOVE button -- rem string editText from SharedPref, toast list*/
+    public void remove_list(View view) {
+        TextView test_text = (TextView) findViewById(R.id.editText);
+        String weight_value = test_text.getText().toString();
+        Integer weight_int = Integer.parseInt(weight_value);
+        weight_int++;
+        test_text.setText(Integer.toString(weight_int));
     }
 
 }
