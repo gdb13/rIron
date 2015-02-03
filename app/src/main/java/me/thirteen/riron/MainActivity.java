@@ -1,5 +1,6 @@
 package me.thirteen.riron;
 
+import java.util.Map;
 import java.util.Random;
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
@@ -19,7 +20,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.content.Intent;
-//import android.widget.EditText;
+import android.widget.EditText;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.widget.Toast;
+import android.util.Log;
 
 
 public class MainActivity extends ActionBarActivity
@@ -206,11 +211,55 @@ public class MainActivity extends ActionBarActivity
 
     /** Called when the user clicks the ADD button -- save string editText to SharedPreferences, toast list*/
     public void add_list(View view) {
-        TextView test_text = (TextView) findViewById(R.id.editText);
-        String weight_value = test_text.getText().toString();
-        Integer weight_int = Integer.parseInt(weight_value);
-        weight_int++;
-        test_text.setText(Integer.toString(weight_int));
+        EditText test_text = (EditText) findViewById(R.id.editText);
+        String new_exercise = test_text.getText().toString();
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("list_name", 0); // 0 - for private mode
+        //here the first parameter is name of your pref file which will hold your data. you can give any name.
+        // Note here the 2nd parameter 0 is the default parameter for private access.
+
+        Editor editor = pref.edit(); // used for save data
+
+        // *** put duplicate value check here, execute below code if new value
+        if (pref.contains(new_exercise) == false) {
+            //int list_length = pref.getInt("list_length", 0);
+
+
+            //key[new_exercise] = reps,weight
+
+            editor.putString(new_exercise, "0,0");
+
+
+            //list_length++;
+
+            //editor.putInt("list_length", list_length);
+
+            editor.commit();
+
+            test_text.setText("Added!");
+        }
+
+        // Display list contents via Toast
+
+/*        String str_exercise_list = new String();
+        for(int i = 0; i < list_length; i++) {
+            String exercise_name_at_idx = "exercise_name_" + Integer.toString(i);
+            str_exercise_list += pref.getString(exercise_name_at_idx, "ERROR");
+            if (i < list_length) {
+                str_exercise_list += ", ";
+            }
+
+        }*/
+
+        Map<String,?> keys = pref.getAll();
+
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            Log.d("map values",entry.getKey() + ": " + entry.getValue().toString());
+        }
+
+        Log.d("map size", Integer.toString(keys.size()));
+        //Toast.makeText(getApplicationContext(), str_exercise_list, Toast.LENGTH_SHORT).show();
+
     }
 
     /** Called when the user clicks the REMOVE button -- rem string editText from SharedPref, toast list*/
@@ -220,6 +269,29 @@ public class MainActivity extends ActionBarActivity
         Integer weight_int = Integer.parseInt(weight_value);
         weight_int++;
         test_text.setText(Integer.toString(weight_int));
+    }
+
+    /** Called when the user clicks the REMOVE button -- rem string editText from SharedPref, toast list*/
+    public void clear_list(View view) {
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("list_name", 0); // 0 - for private mode
+        //here the first parameter is name of your pref file which will hold your data. you can give any name.
+        // Note here the 2nd parameter 0 is the default parameter for private access.
+
+        Editor editor = pref.edit(); // used for save data
+
+        editor.clear();
+
+        editor.commit();
+
+        Map<String,?> keys = pref.getAll();
+
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            Log.d("map values",entry.getKey() + ": " + entry.getValue().toString());
+        }
+
+        Log.d("map size", Integer.toString(keys.size()));
+
     }
 
 }
