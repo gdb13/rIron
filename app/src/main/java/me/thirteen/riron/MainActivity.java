@@ -181,7 +181,7 @@ public class MainActivity extends ActionBarActivity
         TextView weight_textview = (TextView) findViewById(R.id.textView3);
         String weight_value = weight_textview.getText().toString();
         Integer weight_int = Integer.parseInt(weight_value);
-        weight_int--;
+        weight_int -= 5;
         weight_textview.setText(Integer.toString(weight_int));
     }
 
@@ -190,7 +190,7 @@ public class MainActivity extends ActionBarActivity
         TextView weight_textview = (TextView) findViewById(R.id.textView3);
         String weight_value = weight_textview.getText().toString();
         Integer weight_int = Integer.parseInt(weight_value);
-        weight_int++;
+        weight_int += 5;
         weight_textview.setText(Integer.toString(weight_int));
     }
 
@@ -209,6 +209,7 @@ public class MainActivity extends ActionBarActivity
 
     /*** TEMPORARY TEST BUTTONS -- TEST/CODE DATA SAVE AND RECALL -- SharedPreferences ***/
 
+    /** ADD ITEM **/
     /** Called when the user clicks the ADD button -- save string editText to SharedPreferences, toast list*/
     public void add_list(View view) {
         EditText test_text = (EditText) findViewById(R.id.editText);
@@ -236,20 +237,12 @@ public class MainActivity extends ActionBarActivity
 
             editor.commit();
 
-            test_text.setText("Added!");
+            test_text.setText("");
+
+            Toast.makeText(getApplicationContext(), "Added!", Toast.LENGTH_SHORT).show();
         }
 
-        // Display list contents via Toast
 
-/*        String str_exercise_list = new String();
-        for(int i = 0; i < list_length; i++) {
-            String exercise_name_at_idx = "exercise_name_" + Integer.toString(i);
-            str_exercise_list += pref.getString(exercise_name_at_idx, "ERROR");
-            if (i < list_length) {
-                str_exercise_list += ", ";
-            }
-
-        }*/
 
         Map<String,?> keys = pref.getAll();
 
@@ -258,20 +251,40 @@ public class MainActivity extends ActionBarActivity
         }
 
         Log.d("map size", Integer.toString(keys.size()));
-        //Toast.makeText(getApplicationContext(), str_exercise_list, Toast.LENGTH_SHORT).show();
 
     }
 
+    /** REMOVE ITEM **/
     /** Called when the user clicks the REMOVE button -- rem string editText from SharedPref, toast list*/
     public void remove_list(View view) {
-        TextView test_text = (TextView) findViewById(R.id.editText);
-        String weight_value = test_text.getText().toString();
-        Integer weight_int = Integer.parseInt(weight_value);
-        weight_int++;
-        test_text.setText(Integer.toString(weight_int));
+        EditText test_text = (EditText) findViewById(R.id.editText);
+        String remove_exercise = test_text.getText().toString();
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("list_name", 0); // 0 - for private mode
+        //here the first parameter is name of your pref file which will hold your data. you can give any name.
+        // Note here the 2nd parameter 0 is the default parameter for private access.
+
+        Editor editor = pref.edit(); // used for save data
+
+        if (pref.contains(remove_exercise) == true) {
+            editor.remove(remove_exercise);
+            editor.commit();
+            test_text.setText("");
+            Toast.makeText(getApplicationContext(), "Removed!", Toast.LENGTH_SHORT).show();
+        }
+
+        Map<String,?> keys = pref.getAll();
+
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            Log.d("map values",entry.getKey() + ": " + entry.getValue().toString());
+        }
+
+        Log.d("map size", Integer.toString(keys.size()));
+
     }
 
-    /** Called when the user clicks the REMOVE button -- rem string editText from SharedPref, toast list*/
+    /** CLEAR LIST **/
+    /** Called when the user clicks the CLEAR LIST button -- rem string editText from SharedPref*/
     public void clear_list(View view) {
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("list_name", 0); // 0 - for private mode
