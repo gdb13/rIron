@@ -196,14 +196,31 @@ public class MainActivity extends ActionBarActivity
 
     /** Called when the user clicks the Random button */
     public void randomize_exercise(View view) {
+
         TextView exercise_textview = (TextView) findViewById(R.id.textView);
-        String [] exerciseList = new String[3];
-        exerciseList[0] = "Exercise 1";
-        exerciseList[1] = "Exercise 2";
-        exerciseList[2] = "Exercise 3";
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("list_name", 0); // 0 - for private mode
+        //here the first parameter is name of your pref file which will hold your data. you can give any name.
+        // Note here the 2nd parameter 0 is the default parameter for private access.
+
+        Map<String,?> keys = pref.getAll();
+
+        int key_idx = 0;
+        String [] exerciseList = new String[keys.size()];
+        for(Map.Entry<String,?> entry : keys.entrySet()) {
+            exerciseList[key_idx] = entry.getKey();
+            //Log.d("map values",entry.getKey() + ": " + entry.getValue().toString());
+            key_idx++;
+
+        }
+
         Random rand = new Random();
-        int intRandExercise = rand.nextInt(3);
+        int intRandExercise = rand.nextInt(keys.size());
+
         exercise_textview.setText(exerciseList[intRandExercise]);
+        /** CODE HERE TO PARSE AND FILL REP & WEIGHT TEXTVIEWS **/
+
+        Log.d("map size", Integer.toString(keys.size()));
 
     }
 
