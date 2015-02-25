@@ -1,7 +1,9 @@
 package me.thirteen.riron;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
@@ -54,6 +56,51 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        /** INITIALIZE USER LISTS AND SAMPLE EXERCISES IF FIRST RUN **/
+        SharedPreferences ex_lists_pref = getApplicationContext().getSharedPreferences("rIronLists", 0); // 0 - for private mode
+        SharedPreferences exercises_pref = getApplicationContext().getSharedPreferences("rIronExercises", 0); // 0 - for private mode
+        //here the first parameter is name of your pref file which will hold your data. you can give any name.
+        // Note here the 2nd parameter 0 is the default parameter for private access.
+
+        if (!(ex_lists_pref.getInt("first_run", 0) == 1)) {
+            Editor lists_editor = ex_lists_pref.edit(); // used for save data
+            lists_editor.putInt("first_run", 1);
+
+            Set back_bi = new HashSet();
+            Set chest_tri = new HashSet();
+            Set legs = new HashSet();
+            back_bi.add("Barbell Deadlift");
+            back_bi.add("Close Grip Cable Pulldown");
+            back_bi.add("Barbell Rows");
+            chest_tri.add("Barbell Benchpress");
+            chest_tri.add("Preacher Curl");
+            chest_tri.add("Dips");
+            legs.add("Barbell Squat");
+            legs.add("Barbell Stiff-legged Deadlift");
+            legs.add("Calf Raises");
+            lists_editor.putStringSet("Back and Biceps", back_bi);
+            lists_editor.putStringSet("Chest and Triceps", chest_tri);
+            lists_editor.putStringSet("Legs", legs);
+
+            lists_editor.commit();
+
+            Editor exercises_editor = exercises_pref.edit(); // used for save data
+
+            exercises_editor.putString("Barbell Deadlift", "0,0");
+            exercises_editor.putString("Close Grip Cable Pulldown", "0,0");
+            exercises_editor.putString("Barbell Rows", "0,0");
+            exercises_editor.putString("Barbell Benchpress", "0,0");
+            exercises_editor.putString("Preacher Curl", "0,0");
+            exercises_editor.putString("Dips", "0,0");
+            exercises_editor.putString("Barbell Squat", "0,0");
+            exercises_editor.putString("Barbell Stiff-legged Deadlift", "0,0");
+            exercises_editor.putString("Calf Raises", "0,0");
+
+            exercises_editor.commit();
+
+        }
+
     }
 
     @Override
@@ -206,9 +253,9 @@ public class MainActivity extends ActionBarActivity
         Map<String,?> keys = pref.getAll();
 
         int key_idx = 0;
-        String [] exerciseList = new String[keys.size()];
+        String [] exerciseName = new String[keys.size()];
         for(Map.Entry<String,?> entry : keys.entrySet()) {
-            exerciseList[key_idx] = entry.getKey();
+            exerciseName[key_idx] = entry.getKey();
             //Log.d("map values",entry.getKey() + ": " + entry.getValue().toString());
             key_idx++;
 
@@ -216,8 +263,9 @@ public class MainActivity extends ActionBarActivity
 
         Random rand = new Random();
         int intRandExercise = rand.nextInt(keys.size());
+        exercise_textview.setText(exerciseName[intRandExercise]);
 
-        exercise_textview.setText(exerciseList[intRandExercise]);
+        String reps_weight = pref.getString(exerciseName[intRandExercise], "");
         /** CODE HERE TO PARSE AND FILL REP & WEIGHT TEXTVIEWS **/
 
         Log.d("map size", Integer.toString(keys.size()));
@@ -232,7 +280,7 @@ public class MainActivity extends ActionBarActivity
         EditText test_text = (EditText) findViewById(R.id.editText);
         String new_exercise = test_text.getText().toString();
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("list_name", 0); // 0 - for private mode
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("rIronExercises", 0); // 0 - for private mode
         //here the first parameter is name of your pref file which will hold your data. you can give any name.
         // Note here the 2nd parameter 0 is the default parameter for private access.
 
@@ -257,7 +305,10 @@ public class MainActivity extends ActionBarActivity
             test_text.setText("");
 
             Toast.makeText(getApplicationContext(), "Added!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Already exists!", Toast.LENGTH_SHORT).show();
         }
+
 
 
 
