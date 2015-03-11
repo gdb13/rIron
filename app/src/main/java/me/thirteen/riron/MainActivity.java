@@ -205,48 +205,105 @@ public class MainActivity extends ActionBarActivity
     /** Called when the user clicks the decrement_reps button */
     public void decrement_reps(View view) {
         //Intent intent = new Intent(this, DisplayMessageActivity.class);
+        TextView exercise_textview = (TextView) findViewById(R.id.textView);
         TextView reps_textview = (TextView) findViewById(R.id.textView2);
+        TextView weight_textview = (TextView) findViewById(R.id.textView3);
         String reps_value = reps_textview.getText().toString();
         Integer reps_int = Integer.parseInt(reps_value);
         reps_int--;
         reps_textview.setText(Integer.toString(reps_int));
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("rIronExercises", 0); // 0 - for private mode
+        //here the first parameter is name of your pref file which will hold your data. you can give any name.
+        // Note here the 2nd parameter 0 is the default parameter for private access.
+
+        Editor editor = pref.edit(); // used for save data
+
+        String reps_weight = reps_textview.getText().toString() + "," + weight_textview.getText().toString();
+        editor.putString(exercise_textview.getText().toString(), reps_weight);
+
+        editor.commit();
         //intent.putExtra(EXTRA_MESSAGE, message);
         //startActivity(intent);
     }
 
     /** Called when the user clicks the increment_reps button */
     public void increment_reps(View view) {
+        TextView exercise_textview = (TextView) findViewById(R.id.textView);
         TextView reps_textview = (TextView) findViewById(R.id.textView2);
+        TextView weight_textview = (TextView) findViewById(R.id.textView3);
         String reps_value = reps_textview.getText().toString();
         Integer reps_int = Integer.parseInt(reps_value);
         reps_int++;
         reps_textview.setText(Integer.toString(reps_int));
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("rIronExercises", 0); // 0 - for private mode
+        //here the first parameter is name of your pref file which will hold your data. you can give any name.
+        // Note here the 2nd parameter 0 is the default parameter for private access.
+
+        Editor editor = pref.edit(); // used for save data
+
+        String reps_weight = reps_textview.getText().toString() + "," + weight_textview.getText().toString();
+        editor.putString(exercise_textview.getText().toString(), reps_weight);
+
+        editor.commit();
     }
 
     /** Called when the user clicks the decrement_weight button */
     public void decrement_weight(View view) {
+        TextView exercise_textview = (TextView) findViewById(R.id.textView);
+        TextView reps_textview = (TextView) findViewById(R.id.textView2);
         TextView weight_textview = (TextView) findViewById(R.id.textView3);
         String weight_value = weight_textview.getText().toString();
         Integer weight_int = Integer.parseInt(weight_value);
         weight_int -= 5;
         weight_textview.setText(Integer.toString(weight_int));
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("rIronExercises", 0); // 0 - for private mode
+        //here the first parameter is name of your pref file which will hold your data. you can give any name.
+        // Note here the 2nd parameter 0 is the default parameter for private access.
+
+        Editor editor = pref.edit(); // used for save data
+
+        String reps_weight = reps_textview.getText().toString() + "," + weight_textview.getText().toString();
+        editor.putString(exercise_textview.getText().toString(), reps_weight);
+
+        editor.commit();
     }
 
     /** Called when the user clicks the increment_weight button */
     public void increment_weight(View view) {
+        TextView exercise_textview = (TextView) findViewById(R.id.textView);
+        TextView reps_textview = (TextView) findViewById(R.id.textView2);
         TextView weight_textview = (TextView) findViewById(R.id.textView3);
         String weight_value = weight_textview.getText().toString();
         Integer weight_int = Integer.parseInt(weight_value);
         weight_int += 5;
         weight_textview.setText(Integer.toString(weight_int));
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("rIronExercises", 0); // 0 - for private mode
+        //here the first parameter is name of your pref file which will hold your data. you can give any name.
+        // Note here the 2nd parameter 0 is the default parameter for private access.
+
+        Editor editor = pref.edit(); // used for save data
+
+        String reps_weight = reps_textview.getText().toString() + "," + weight_textview.getText().toString();
+        editor.putString(exercise_textview.getText().toString(), reps_weight);
+
+        editor.commit();
     }
 
     /** Called when the user clicks the Random button */
     public void randomize_exercise(View view) {
-
+        /**
+         * Select random exercise from SharedPreferences and populate exercise, reps & weight
+         * textviews
+         */
         TextView exercise_textview = (TextView) findViewById(R.id.textView);
+        TextView reps_textview = (TextView) findViewById(R.id.textView2);
+        TextView weight_textview = (TextView) findViewById(R.id.textView3);
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("list_name", 0); // 0 - for private mode
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("rIronExercises", 0); // 0 - for private mode
         //here the first parameter is name of your pref file which will hold your data. you can give any name.
         // Note here the 2nd parameter 0 is the default parameter for private access.
 
@@ -254,8 +311,14 @@ public class MainActivity extends ActionBarActivity
 
         int key_idx = 0;
         String [] exerciseName = new String[keys.size()];
+        String [] repsValue = new String[keys.size()];
+        String [] weightValue = new String[keys.size()];
+        String [] reps_weight = new String[2];
         for(Map.Entry<String,?> entry : keys.entrySet()) {
             exerciseName[key_idx] = entry.getKey();
+            reps_weight = entry.getValue().toString().split(",");
+            repsValue[key_idx] = reps_weight[0];
+            weightValue[key_idx] = reps_weight[1];
             //Log.d("map values",entry.getKey() + ": " + entry.getValue().toString());
             key_idx++;
 
@@ -264,9 +327,8 @@ public class MainActivity extends ActionBarActivity
         Random rand = new Random();
         int intRandExercise = rand.nextInt(keys.size());
         exercise_textview.setText(exerciseName[intRandExercise]);
-
-        String reps_weight = pref.getString(exerciseName[intRandExercise], "");
-        /** CODE HERE TO PARSE AND FILL REP & WEIGHT TEXTVIEWS **/
+        reps_textview.setText(repsValue[intRandExercise]);
+        weight_textview.setText(weightValue[intRandExercise]);
 
         Log.d("map size", Integer.toString(keys.size()));
 
@@ -355,17 +417,21 @@ public class MainActivity extends ActionBarActivity
     /** Called when the user clicks the CLEAR LIST button -- rem string editText from SharedPref*/
     public void clear_list(View view) {
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("list_name", 0); // 0 - for private mode
+        SharedPreferences ex_lists_pref = getApplicationContext().getSharedPreferences("rIronLists", 0); // 0 - for private mode
+        SharedPreferences exercises_pref = getApplicationContext().getSharedPreferences("rIronExercises", 0); // 0 - for private mode
         //here the first parameter is name of your pref file which will hold your data. you can give any name.
         // Note here the 2nd parameter 0 is the default parameter for private access.
 
-        Editor editor = pref.edit(); // used for save data
+        Editor editor = ex_lists_pref.edit(); // used for save data
+        Editor editor2 = exercises_pref.edit(); // used for save data
 
         editor.clear();
+        editor2.clear();
 
         editor.commit();
+        editor2.commit();
 
-        Map<String,?> keys = pref.getAll();
+        Map<String,?> keys = exercises_pref.getAll();
 
         for(Map.Entry<String,?> entry : keys.entrySet()){
             Log.d("map values",entry.getKey() + ": " + entry.getValue().toString());
